@@ -30,6 +30,7 @@ sudokuInicial = """
 
 tableroInicial = np.array([[int(i) for i in linea] for linea in sudokuInicial.split()])
 
+
 class Cuadricula:
     def __init__(self, filas, columnas, ancho, alto, tablero):
         self.filas = filas
@@ -41,6 +42,7 @@ class Cuadricula:
         self.model = None
         self.selected = None
 
+    #Funcion para dibujar el tablero completo
     def dibujar(self, win):
         division = self.ancho / 9
         for i in range(self.filas+1):
@@ -67,7 +69,7 @@ class Cubo:
         self.ancho = ancho
         self.alto = alto
         
-
+    #Funcion para dibujar el cada cubo del sudoku
     def dibujar(self, win):
         fnt = pygame.font.SysFont("comicsans", 40)
         division = self.ancho / 9
@@ -81,24 +83,27 @@ class Cubo:
             texto = fnt.render(str(self.numero), 1, (0, 0, 0))
             win.blit(texto, (x + (division/2 - texto.get_width()/2), y + (division/2 - texto.get_height()/2)))
 
+#Funcion para acutalizar el sudoku
 def actualizar_tablero(win, tablero):
     win.fill((255,255,255))
     tablero.dibujar(win)
 
-
+#Funcion principal
 def main():
+    #crear la ventana del juego con pygame
     win = pygame.display.set_mode((540,600))
     pygame.display.set_caption("Sudoku")
+    #crear un objeto de cuadricula
     tablero = Cuadricula(9, 9, 540, 540, tableroInicial)
     key = None
     run = True
-    
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_b:
+                #Apretar el boton "space" para resolver el sudoku
+                if event.key == pygame.K_SPACE:
                     solucion = ResolverSudoku(tableroInicial)
                     # solucion = hc.solveSudoku(tableroInicial)
                     tablero = Cuadricula(9, 9, 540, 540, solucion)
