@@ -1,6 +1,7 @@
 import pygame
 import numpy as np
 from SimulatedAneling import ResolverSudoku
+import HillClimbing as hc
 import time
 pygame.font.init()
 
@@ -99,6 +100,7 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_b:
                     solucion = ResolverSudoku(tableroInicial)
+                    # solucion = hc.solveSudoku(tableroInicial)
                     tablero = Cuadricula(9, 9, 540, 540, solucion)
 
         actualizar_tablero(win, tablero)
