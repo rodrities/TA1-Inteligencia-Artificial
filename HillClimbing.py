@@ -1,6 +1,7 @@
 import numpy as np
 
 
+# Busca números duplicados en un arreglo dado
 def findNumDupe(nums):
     counter = 0
     for i in range(9):
@@ -14,7 +15,9 @@ def findNumDupe(nums):
     return counter
 
 
+# Busca números duplicados en un cuadrado 3x3 del sudoku
 def dupeInSquare(grid, square):
+    # Determina el cuadrado donde se va a buscar
     if square == 0:
         temp = np.copy(grid[0:3, 0:3])
     elif square == 1:
@@ -34,10 +37,12 @@ def dupeInSquare(grid, square):
     else:
         temp = np.copy(grid[6:9, 6:9])
 
+    # Simplifica la matriz en un arreglo para facilidad de búsqueda
     temp = temp.reshape(9)
     return findNumDupe(temp)
 
 
+# Contabiliza los duplicados en columnas y cuadrados 3x3 para determinar el valor de la heurística
 def totalDupes(state):
     counter = 0
     for i in range(9):
@@ -47,6 +52,7 @@ def totalDupes(state):
     return counter
 
 
+# Coloca los números faltantes en una fila mezclados aleatoriamente
 def randomize(state, i):
     nums = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9])
     row = state[i, :].copy()
@@ -68,6 +74,7 @@ def randomize(state, i):
     return grid
 
 
+# Algoritmo principal de Hill Climbing
 def hillClimbing(initial_state):
     current_state = initial_state.copy()
     row = 0
@@ -77,9 +84,11 @@ def hillClimbing(initial_state):
         resetting = False
         new_state = randomize(current_state.copy(), row)
         errors = totalDupes(new_state)
+        # Se buscan 0 errores en cada iteración
         while errors > 0:
             counter += 1
-            if counter > 50000:
+            # Contador para evitar bucles infinitos
+            if counter > 1000:
                 print("Resetting...")
                 current_state = initial_state.copy()
                 row = 0
@@ -98,6 +107,7 @@ def hillClimbing(initial_state):
     return current_state
 
 
+# Función a ejecutar para resolver el sudoku
 def solveSudoku(mat):
     grid = hillClimbing(mat)
     print(grid)
